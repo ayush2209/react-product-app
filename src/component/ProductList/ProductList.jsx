@@ -99,9 +99,9 @@ const ProductList = () => {
     return (
         <>
             <ThemeProvider theme={darkTheme}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' , flexWrap: 'wrap' }}>
                     <h2 style={{ color: 'lightslategrey' }}> Product List </h2>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' , flexWrap: 'wrap'  }}>
                         <div>
                             <Autocomplete
                                 disablePortal
