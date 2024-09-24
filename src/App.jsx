@@ -1,12 +1,68 @@
 import './App.css';
 import ProductList from './component/ProductList/ProductList';
+import ProductDetails from './component/ProductDetails/ProductDetails';
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 
-function App() {
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+
+const darkTheme = createTheme({
+  palette: {
+      mode: 'dark',
+      primary: {
+          main: '#90caf9',
+      },
+      background: {
+          default: '#121212',
+          paper: '#1d1d1d',
+      },
+      text: {
+          primary: '#ffffff',
+          secondary: '#b0bec5',
+      },
+  },
+});
+
+const lightTheme = createTheme({
+  palette: {
+      mode: 'light',
+      primary: {
+          main: '#1976d2',
+      },
+      background: {
+          default: '#ffffff',
+          paper: '#f5f5f5',
+      },
+      text: {
+          primary: '#000000',
+          secondary: '#757575',
+      },
+  },
+});
+
+const Home = () => {
   return (
     <div>
+      <ThemeProvider theme={darkTheme}>
       <ProductList />
+      <Outlet />
+      </ThemeProvider>
     </div>
   )
 }
+
+const appRoutes = createBrowserRouter([
+  { path: '/', element: <Home /> },
+  { path: 'productDetails/:id', element: <ProductDetails /> }
+]);
+
+const App = () => {
+  return (
+    <div>
+      <RouterProvider router={appRoutes} />
+    </div>
+  )
+}
+
 
 export default App;

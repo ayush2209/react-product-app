@@ -3,7 +3,6 @@ import './ProductList.css';
 
 import { CusotmRating } from '../Rating/CustomRating';
 
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -17,40 +16,9 @@ import { red } from '@mui/material/colors';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import { Link } from 'react-router-dom';
 
-const darkTheme = createTheme({
-    palette: {
-        mode: 'dark',
-        primary: {
-            main: '#90caf9',
-        },
-        background: {
-            default: '#121212',
-            paper: '#1d1d1d',
-        },
-        text: {
-            primary: '#ffffff',
-            secondary: '#b0bec5',
-        },
-    },
-});
 
-const lightTheme = createTheme({
-    palette: {
-        mode: 'light',
-        primary: {
-            main: '#1976d2',
-        },
-        background: {
-            default: '#ffffff',
-            paper: '#f5f5f5',
-        },
-        text: {
-            primary: '#000000',
-            secondary: '#757575',
-        },
-    },
-});
 
 const ProductList = () => {
 
@@ -98,30 +66,30 @@ const ProductList = () => {
 
     return (
         <>
-            <ThemeProvider theme={darkTheme}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' , flexWrap: 'wrap' }}>
-                    <h2 style={{ color: 'lightslategrey' }}> Product List </h2>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' , flexWrap: 'wrap'  }}>
-                        <div>
-                            <Autocomplete
-                                disablePortal
-                                options={getProductListDropdown()}
-                                onChange={handleSelectionChange}
-                                sx={{ width: 300 }}
-                                renderInput={(params) => <TextField {...params} label="Product" />}
-                            />
-                        </div>
-                        <div>
-                            <Box
-                                component="form"
-                                sx={{ '& > :not(style)': { m: 1, width: '25ch' } }}
-                                noValidate
-                                autoComplete="off"
-                            >
-                                <TextField id="outlined-basic" label="Search Item" variant="outlined" onKeyDown={searchClicked} />
-                            </Box>
-                        </div>
-                        {/* <Stack spacing={2} sx={{ width: 300 }}>
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <h2 style={{ color: 'lightslategrey' }}> Product List </h2>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div>
+                        <Autocomplete
+                            disablePortal
+                            options={getProductListDropdown()}
+                            onChange={handleSelectionChange}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => <TextField {...params} label="Product" />}
+                        />
+                    </div>
+                    <div>
+                        <Box
+                            component="form"
+                            sx={{ '& > :not(style)': { m: 1, width: '25ch' } }}
+                            noValidate
+                            autoComplete="off"
+                        >
+                            <TextField id="outlined-basic" label="Search Item" variant="outlined" onKeyDown={searchClicked} />
+                        </Box>
+                    </div>
+                    {/* <Stack spacing={2} sx={{ width: 300 }}>
                             <Autocomplete
                                 freeSolo
                                 id="free-solo"
@@ -150,11 +118,12 @@ const ProductList = () => {
                                 )}
                             />
                         </Stack> */}
-                    </div>
                 </div>
-                <div className='productList'>
-                    {
-                        tempProductList?.map((product) => (
+            </div>
+            <div className='productList'>
+                {
+                    tempProductList?.map((product) => (
+                        <Link to={`/productDetails/${product.id}`} key={product.id} style={{ textDecoration: 'none' }}>
                             <Card className='card_Items' sx={{ maxWidth: 345 }} key={product.id}>
                                 <CardHeader
                                     avatar={
@@ -190,10 +159,11 @@ const ProductList = () => {
                                     </div>
                                 </CardActions>
                             </Card>
-                        ))
-                    }
-                </div>
-            </ThemeProvider>
+                        </Link>
+                    ))
+                }
+            </div>
+
         </>
     )
 }
