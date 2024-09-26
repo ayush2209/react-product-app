@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from 'react'
-import './ProductList.css';
-
-import { CusotmRating } from '../Rating/CustomRating';
-
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import CardActionArea from '@mui/material/CardActionArea';
-import CardActions from '@mui/material/CardActions';
-import CardHeader from '@mui/material/CardHeader';
-import { Avatar } from '@mui/material';
-import { red } from '@mui/material/colors';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Link } from 'react-router-dom';
 
+import ProductCard, { recomendedProductComponent } from './ProductCard';
 
+const ProductList = ({ searchProduct }) => {
 
-const ProductList = () => {
+    const RecommendedProductComponent = recomendedProductComponent(ProductCard);
 
     useEffect(() => {
         getAllPhotos();
     }, []);
+
+
+    useEffect(() => {
+        const filteredOption = productList?.filter((product) => {
+            return product.title?.toLowerCase().includes(searchProduct.toLowerCase());
+        })
+        setTempProductList(filteredOption);
+
+        if (searchProduct === '') {
+            setTempProductList(productList);
+        }
+    }, [searchProduct]);
 
     const [productList, setProductList] = useState([]);
     const [tempProductList, setTempProductList] = useState([]);
@@ -65,106 +65,38 @@ const ProductList = () => {
     };
 
     return (
-        <>
-
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <h2 style={{ color: 'lightslategrey' }}> Product List </h2>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div>
-                        <Autocomplete
-                            disablePortal
-                            options={getProductListDropdown()}
-                            onChange={handleSelectionChange}
-                            sx={{ width: 300 }}
-                            renderInput={(params) => <TextField {...params} label="Product" />}
-                        />
-                    </div>
-                    <div>
-                        <Box
-                            component="form"
-                            sx={{ '& > :not(style)': { m: 1, width: '25ch' } }}
-                            noValidate
-                            autoComplete="off"
-                        >
-                            <TextField id="outlined-basic" label="Search Item" variant="outlined" onKeyDown={searchClicked} />
-                        </Box>
-                    </div>
-                    {/* <Stack spacing={2} sx={{ width: 300 }}>
-                            <Autocomplete
-                                freeSolo
-                                id="free-solo"
-                                disableClearable
-                                options={productList.map((option) => option.title)}
-                                inputValue={searchProdutInput}
-                                onInputChange={(event, newInputValue) => {
-                                    setSearchProdutInput(newInputValue);
-                                }}
-                                filterOptions={(options, state) =>
-                                    state.inputValue === '' ? [] : options.filter((option) =>
-                                        option.toLowerCase().includes(state.inputValue.toLowerCase())
-                                    )
-                                }
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Search input"
-                                        slotProps={{
-                                            input: {
-                                                ...params.InputProps,
-                                                type: 'search',
-                                            },
-                                        }}
-                                    />
-                                )}
-                            />
-                        </Stack> */}
+        <div className='mt-3 m-4'>
+            <div className='flex flex-col md:flex-row justify-end gap-3'>
+                <div className='w-full md:w-[250px]'>
+                    <Autocomplete
+                        options={getProductListDropdown()}
+                        onChange={handleSelectionChange}
+                        renderInput={(params) => <TextField {...params} label="Product" />}
+                    />
+                </div>
+                <div className='w-full md:w-auto hidden sm:block'>
+                    <Box 
+                        className='w-full md:w-[250px]'
+                        component="form"
+                        noValidate
+                        autoComplete="off"
+                    >
+                        <TextField id="outlined-basic" label="Search Item" variant="outlined" onKeyDown={searchClicked} fullWidth />
+                    </Box>
                 </div>
             </div>
-            <div className='productList'>
-                {
+            <div className='flex flex-wrap justify-center'>
+                {tempProductList.length === 0 ? (
+                    <h1 className='flex justify-center items-center'>No Product Found</h1>
+                ) : (
                     tempProductList?.map((product) => (
-                        <Link to={`/productDetails/${product.id}`} key={product.id} style={{ textDecoration: 'none' }}>
-                            <Card className='card_Items' sx={{ maxWidth: 345 }} key={product.id}>
-                                <CardHeader
-                                    avatar={
-                                        <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                                            {product.title.charAt(0).toUpperCase()}
-                                        </Avatar>
-                                    }
-                                    title={product.category.toUpperCase()}
-                                />
-                                <CardActionArea>
-                                    <CardMedia
-                                        component="img"
-                                        height="250"
-                                        image={product.image ? product.image : "https://placehold.co/600x400"} alt={product.title}
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="div">
-                                            {product.title}
-                                        </Typography>
-                                        <Typography variant="body2" sx={{ color: 'text.secondary', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {product.description}
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                    <div>
-                                        <Button size="small" color="primary">
-                                            {product.price}
-                                        </Button>
-                                    </div>
-                                    <div>
-                                        <CusotmRating key={product.id} ratingValue={product} />
-                                    </div>
-                                </CardActions>
-                            </Card>
+                        <Link to={`/productDetails/${product.id}`} key={product.id} style={{ textDecoration: 'none' }} >
+                            {product?.rating?.rate >= 4 ? <RecommendedProductComponent product={product} /> : <ProductCard product={product} />}
                         </Link>
                     ))
-                }
+                )}
             </div>
-
-        </>
+        </div>
     )
 }
 

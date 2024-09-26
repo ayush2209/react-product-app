@@ -1,25 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
-
 :root {
   --font-base: "DM Sans", sans-serif;
   --primary-color: #f9f2ed;
-  /* else use edf2f8 as primary */
-  --blue-color: #313bac;
-  --black-color: #030303;
-  --light-gray-color: #e4e4e4;
-  --gray-color: #616161;
-  --light-gray-color: #bdbdbd;
-  --brown-color: #46364a;
-  --white-color: #ffffff;
-}
-.app {
-  font-family: "Noto Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-  font-variation-settings: "wdth" 100;
-
-  .link {
-    text-decoration: none;
-    color: inherit;
-  }
 }
