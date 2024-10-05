@@ -5,19 +5,32 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { Link } from 'react-router-dom';
 
 import ProductCard, { recomendedProductComponent } from './ProductCard';
+import CatogaryWiseProductAccordion from '../CatogaryWiseProduct/CatogaryWiseProductAccordion';
 
 const ProductList = ({ searchProduct }) => {
 
     const RecommendedProductComponent = recomendedProductComponent(ProductCard);
 
+    const [productList, setProductList] = useState([]);
+    const [tempProductList, setTempProductList] = useState([]);
+    const [categoryList, setCategoryList] = useState([]);
+    const [showItemsIndex, setShowItemsIndex] = useState(0);
+
+    const handleSetShowItems = (index) => {
+        setShowItemsIndex(prevIndex => (prevIndex === index ? null : index));
+    }
+
     useEffect(() => {
         getAllPhotos();
     }, []);
 
+    useEffect(() => {
+        setCategoryList(groupProductsByCategory(tempProductList));
+    }, [productList]);
 
     useEffect(() => {
         const filteredOption = productList?.filter((product) => {
-            return product.title?.toLowerCase().includes(searchProduct.toLowerCase());
+            return product.title?.toLowerCase().includes(searchProduct?.toLowerCase());
         })
         setTempProductList(filteredOption);
 
@@ -26,15 +39,36 @@ const ProductList = ({ searchProduct }) => {
         }
     }, [searchProduct]);
 
-    const [productList, setProductList] = useState([]);
-    const [tempProductList, setTempProductList] = useState([]);
-
     const getAllPhotos = async () => {
-        const resposne = await fetch('https://fakestoreapi.com/products');
-        const data = await resposne.json();
-        setProductList(data);
-        setTempProductList(data);
+        try {
+            const response = await fetch('https://fakestoreapi.com/products');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setProductList(data);
+            setTempProductList(data);
+        } catch (error) {
+            console.error('Failed to fetch products:', error);
+        }
     }
+
+    const groupProductsByCategory = (products) => {
+        const groupedData = products.reduce((acc, product) => {
+            const category = product.category.split(' ')[0];
+            if (!acc[category]) {
+                acc[category] = [];
+            }
+            acc[category].push(product);
+            return acc;
+        }, {});
+
+        return Object.keys(groupedData).map((category, index) => ({
+            type: category,
+            data: groupedData[category],
+            id: 'a' + index + Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000
+        }));
+    };
 
     const searchClicked = (event) => {
         if (event.key === 'Enter' || event.keyCode === 13 || event.which === 13) {
@@ -53,10 +87,9 @@ const ProductList = ({ searchProduct }) => {
     }
 
     const handleSelectionChange = (event, value) => {
-        console.log(value, event);
         if (value) {
             const filteredOption = productList?.filter((product) => {
-                return product.category === value.toLowerCase();
+                return product.category === value?.toLowerCase();
             });
             setTempProductList(filteredOption);
         } else {
@@ -75,7 +108,7 @@ const ProductList = ({ searchProduct }) => {
                     />
                 </div>
                 <div className='w-full md:w-auto hidden sm:block'>
-                    <Box 
+                    <Box
                         className='w-full md:w-[250px]'
                         component="form"
                         noValidate
@@ -85,6 +118,20 @@ const ProductList = ({ searchProduct }) => {
                     </Box>
                 </div>
             </div>
+
+            <div className='my-3 text-center border-double border-4 border-indigo-600'>
+                <div className='py-4'>Lifting the State : All Product Catogory Using Accordion.</div>
+                <div>
+                    {categoryList.length > 0 && categoryList.map((product, index) => (
+                        <CatogaryWiseProductAccordion
+                            key={product.id}
+                            productList={product}
+                            showItemsIndex={index === showItemsIndex ? true : false}
+                            setShowItems={() => handleSetShowItems(index)} />
+                    ))}
+                </div>
+            </div>
+
             <div className='flex flex-wrap justify-center'>
                 {tempProductList.length === 0 ? (
                     <h1 className='flex justify-center items-center'>No Product Found</h1>
@@ -96,6 +143,8 @@ const ProductList = ({ searchProduct }) => {
                     ))
                 )}
             </div>
+
+
         </div>
     )
 }

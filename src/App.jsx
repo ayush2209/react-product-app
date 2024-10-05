@@ -1,60 +1,69 @@
 import './App.css';
 import ProductList from './component/ProductList/ProductList';
 import ProductDetails from './component/ProductDetails/ProductDetails';
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { createBrowserRouter, RouterProvider, Outlet, Route } from 'react-router-dom';
 import Navbar from './component/Header/Navbar';
-import { useState } from 'react';
+import { lazy, useState, Suspense, useEffect } from 'react';
+import ProtectedRoute from './component/Auth/ProtectedRoute';
 
-// const darkTheme = createTheme({
-//   palette: {
-//     mode: 'dark',
-//     primary: {
-//       main: '#90caf9',
-//     },
-//     background: {
-//       default: '#121212',
-//       paper: '#1d1d1d',
-//     },
-//     text: {
-//       primary: '#ffffff',
-//       secondary: '#b0bec5',
-//     },
-//   },
-// });
+const CatorayWiseProduct = lazy(() =>
+  import('./component/CatogaryWiseProduct/CatogaryWiseProductAccordion')
+);
 
-// const lightTheme = createTheme({
-//   palette: {
-//     mode: 'light',
-//     primary: {
-//       main: '#1976d2',
-//     },
-//     background: {
-//       default: '#ffffff',
-//       paper: '#f5f5f5',
-//     },
-//     text: {
-//       primary: '#000000',
-//       secondary: '#757575',
-//     },
-//   },
-// });
+const About = lazy(() => import('./component/Profile/About'));
 
 const Home = () => {
   const [searchProduct, setSearchProduct] = useState('');
 
+  const [isLoggedIn , setIsLoggedIn] = useState('');
+
+  const handleLoginClick = () => {
+    console.log('login')
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem('isAuthenticated');
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [isLoggedIn])
+
   return (
-    <div style={{}}>
-      <Navbar setSearchProduct={setSearchProduct} />
-      <ProductList searchProduct={searchProduct}/>
+    <div>
+      <ProtectedRoute component={Navbar} setSearchProduct={setSearchProduct} />
       <Outlet />
     </div>
   )
 }
 
 const appRoutes = createBrowserRouter([
-  { path: '/', element: <Home /> },
-  { path: 'productDetails/:id', element: <ProductDetails /> }
+  {
+    path: '/',
+    element: <Home />,
+    children: [
+      { path: '/', element: <ProtectedRoute component={ProductList} /> },
+      { path: 'productDetails/:id', element: <ProtectedRoute component={ProductDetails} /> },
+      {
+        path: 'allCatogary',
+        element: (
+          <Suspense>
+            <ProtectedRoute component={CatorayWiseProduct} />
+          </Suspense>
+        )
+      },
+      {
+        path: '/about',
+        element: (
+          <Suspense>
+            <ProtectedRoute component={About} />
+          </Suspense>
+        )
+      }
+    ],
+    errorElement: <h1>404 Not Found</h1>
+  }
 ]);
 
 const App = () => {
@@ -64,6 +73,5 @@ const App = () => {
     </div>
   )
 }
-
 
 export default App;

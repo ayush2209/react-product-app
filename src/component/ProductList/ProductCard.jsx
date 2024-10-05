@@ -12,7 +12,7 @@ import { red } from '@mui/material/colors';
 
 const ProductCard = ({ product }) => {
     return (
-        <Card className='m-4 w-[300px]' key={product.id}>
+        <Card className='m-4 w-[300px]' key={product.id} sx={{ boxShadow: 4 }}>
             <CardHeader onClick={(event) => event.preventDefault()}
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -28,13 +28,13 @@ const ProductCard = ({ product }) => {
                     image={product.image ? product.image : "https://placehold.co/600x400"} alt={product.title}
                 />
                 <CardContent onClick={(event) => event.preventDefault()}>
-                    <p>{product.title}</p>
+                    <p className='font-light md:truncate hover:overflow-visible hover:whitespace-normal hover:text-ellipsis'>{product.title}</p>
                 </CardContent>
             </CardActionArea>
             <CardActions className='flex items-center align-middle justify-between' onClick={(event) => event.preventDefault()}>
                 <div>
                     <Button size="small" color="primary">
-                        {product.price}
+                        ₹ {product.price}
                     </Button>
                 </div>
                 <div>
@@ -51,7 +51,7 @@ export const recomendedProductComponent = (ProductList) => {
     return (props) => {
         return (
             <div className='relative'>
-                <p className='absolute top-[0px] shadow-lg left-[70%] bg-gray-600 font-serif text-white border-dashed rounded-lg p-1'>Reconended</p>
+                <p className='absolute top-[0px] shadow-lg left-[70%] bg-yellow-600 font-serif text-white border-dashed rounded-lg p-2 '>Recomended</p>
                 <ProductList {...props} />
             </div>
         )
