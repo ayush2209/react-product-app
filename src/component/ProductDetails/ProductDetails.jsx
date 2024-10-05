@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useParams } from 'react-router-dom';
-import './ProductDetails.css';
 
 const ProductDetails = () => {
 
@@ -28,24 +27,25 @@ const ProductDetails = () => {
     return (
         <>
             <div>
-                <div>
-                    <h1 className='text-2xl font-bold p-5'>Product Details</h1>
+                <div className='text-center'>
+                    <h1 className='text-xl font-bold p-3'>Product Details</h1>
                     <hr className='border-dashed' />
                 </div>
-                <div className="flex items-center flex-wrap justify-between">
-                    <div className="aspect-h-1 aspect-w-1 rounded-md group-hover:opacity-75 overflow-hidden">
-                        <img className='h-auto max-w-xs' src={product.image} alt={product.title} />
+                <div className="flex items-center flex-wrap justify-between p-4 max-w-full">
+                    <div className="w-full md:w-[30%] px-4 rounded-md overflow-hidden">
+                        <img className='h-auto' src={product.image} alt={product.title} />
                     </div>
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-4 px-4 w-full md:w-[70%]">
                         <h2 className='font-bold'>{product.title}</h2>
                         <p>{product.description}</p>
-                        <p>Price: ${product.price}</p>
-
-                        <div className='flex gap-6'>
-                            <button>Buy Now</button>
-                            <button>Add to Cart</button>
+                        <div>
+                            <div className='text-[#388e3c] font-semibold'>Special Price</div>
+                            <div>₹ {product.price}</div>
                         </div>
-
+                        <div className='flex gap-4 mt-3 flex-wrap'>
+                            <button className='bg-[#fb641b] p-2 w-full md:w-[20%] border rounded-sm text-white shadow-lg'>Buy Now</button>
+                            <button className='bg-[#ff9f00] p-2 w-full md:w-[20%] border rounded-sm text-white shadow-lg'>Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
