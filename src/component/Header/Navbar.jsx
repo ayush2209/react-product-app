@@ -26,7 +26,7 @@ const Navbar = ({ setSearchProduct }) => {
             </div> */}
             <div className='flex gap-5 cursor-pointer'>
                 <Link className=' hover:text-pink-600' to="/about">About</Link>
-                <Link className=' hover:text-pink-600' to="/about">Cart: ( {cartItems} Items)</Link>
+                {cartItems > 0 && <Link className=' hover:text-pink-600' to="/about">Cart: ( {cartItems} Items)</Link> }
                 <Link className='text-cyan-700 font-semibold hover:text-pink-600'>{user}</Link>
             </div>
         </div>

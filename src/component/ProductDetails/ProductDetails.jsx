@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route, useParams } from 'react-router-dom';
+import { addItems } from '../../store/cartSlice';
 
 const ProductDetails = () => {
 
@@ -11,12 +13,19 @@ const ProductDetails = () => {
 
     const [product, setProduct] = useState(null);
 
+    const dispatch = useDispatch();
+
     const getProductDetails = async () => {
         const API_URL = `https://fakestoreapi.com/products/${id}`;
         const response = await fetch(API_URL);
         const data = await response.json();
         setProduct(data);
     };
+
+    const handleAddToCart = (product) => {
+        console.log('Product Added to Cart', product);
+        dispatch(addItems(product));
+    }
 
     if (!product) {
         return (
@@ -43,8 +52,9 @@ const ProductDetails = () => {
                             <div>₹ {product.price}</div>
                         </div>
                         <div className='flex gap-4 mt-3 flex-wrap'>
-                            <button className='bg-[#fb641b] p-2 w-full md:w-[20%] border rounded-sm text-white shadow-lg'>Buy Now</button>
-                            <button className='bg-[#ff9f00] p-2 w-full md:w-[20%] border rounded-sm text-white shadow-lg'>Add to Cart</button>
+                            <button className='bg-[#fb641b] p-2 w-full md:w-[20%] border rounded-sm text-white shadow-lg uppercase'>Buy Now</button>
+                            <button className='bg-[#ff9f00] p-2 w-full md:w-[20%] border rounded-sm text-white shadow-lg uppercase'
+                                onClick={() => handleAddToCart(product)}>Add to Cart</button>
                         </div>
                     </div>
                 </div>

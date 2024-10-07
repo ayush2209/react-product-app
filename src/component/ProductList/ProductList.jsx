@@ -124,7 +124,7 @@ const ProductList = ({ searchProduct }) => {
                     </div>
                 </div>
             </div>
-            
+
             <div className='my-3 text-center border-double border-4 border-indigo-600'>
                 <div className='py-4'>Lifting the State : All Product Catogory Using Accordion.</div>
                 <div>
