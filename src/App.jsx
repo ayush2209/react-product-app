@@ -1,10 +1,13 @@
+import { lazy, useState, Suspense, useEffect, useContext } from 'react';
 import './App.css';
 import ProductList from './component/ProductList/ProductList';
 import ProductDetails from './component/ProductDetails/ProductDetails';
 import { createBrowserRouter, RouterProvider, Outlet, Route } from 'react-router-dom';
 import Navbar from './component/Header/Navbar';
-import { lazy, useState, Suspense, useEffect } from 'react';
 import ProtectedRoute from './component/Auth/ProtectedRoute';
+import UserLoginContext from './utils/UserLogginContext';
+import { Provider } from 'react-redux';
+import appStore from './store/appStore';
 
 const CatorayWiseProduct = lazy(() =>
   import('./component/CatogaryWiseProduct/CatogaryWiseProductAccordion')
@@ -15,26 +18,23 @@ const About = lazy(() => import('./component/Profile/About'));
 const Home = () => {
   const [searchProduct, setSearchProduct] = useState('');
 
-  const [isLoggedIn , setIsLoggedIn] = useState('');
-
-  const handleLoginClick = () => {
-    console.log('login')
-  }
+  const [userName, setUserName] = useState('Ayush');
+  const { user } = useContext(UserLoginContext);
 
   useEffect(() => {
-    const token = localStorage.getItem('isAuthenticated');
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
+    const data = {
+      user: 'Ayush Anand'
     }
-  }, [isLoggedIn])
+    setUserName(data.user);
+  }, []);
 
   return (
-    <div>
-      <ProtectedRoute component={Navbar} setSearchProduct={setSearchProduct} />
-      <Outlet />
-    </div>
+    <Provider store={appStore}> 
+      <UserLoginContext.Provider value={{ user: userName, setUserName }}> 
+        <ProtectedRoute component={Navbar} setSearchProduct={setSearchProduct} />
+        <Outlet />
+      </UserLoginContext.Provider>
+    </Provider>
   )
 }
 

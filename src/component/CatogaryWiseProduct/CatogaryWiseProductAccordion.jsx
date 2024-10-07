@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import ProductList from './ProductList';
+import React from 'react';
+import AccordionProductList from './AccordionProductList';
 
-const CatogaryWiseProductAccordion = ({ productList,showItemsIndex, setShowItems }) => {
+const CatogaryWiseProductAccordion = ({ productList, showItemsIndex, setShowItems }) => {
     
     const handleAccordion = () => {
         setShowItems();
@@ -27,10 +27,12 @@ const CatogaryWiseProductAccordion = ({ productList,showItemsIndex, setShowItems
                         </button>
                     </div>
                 </div>
-                <hr />
-                <div className='p-3 text-left'>
-                   {showItemsIndex && <ProductList productItems={productList.data} />}
-                </div>
+                {showItemsIndex && <hr />}
+                {showItemsIndex &&
+                    <div className='p-3 text-left'>
+                        {showItemsIndex && <AccordionProductList productItems={productList.data} />}
+                    </div>
+                }
             </div>
         </>
     );

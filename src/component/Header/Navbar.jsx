@@ -1,14 +1,18 @@
 
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import UserLoginContext from '../../utils/UserLogginContext';
+import { useSelector } from 'react-redux';
 
-const Navbar = ({setSearchProduct}) => {
+const Navbar = ({ setSearchProduct }) => {
+
+    const { user } = useContext(UserLoginContext);
+    const cartItems = useSelector(state => state.cart.items.length);
+
     return (
         <div className="flex flex-col md:flex-row gap-3 justify-between items-center p-4 sticky top-0 left-0 shadow-lg z-[2] backdrop-filter backdrop-blur-lg">
-            <div style={{ color: 'lightslategrey' }}>
-                <h3>
-                    <Link to="/"> Product </Link>
-                   
-                </h3>
+            <div style={{ color: 'lightslategrey' }}>                
+                <Link to="/" className='font-bold hover:text-pink-600'> Product </Link>              
             </div>
             {/* <div>
                 <input 
@@ -21,10 +25,9 @@ const Navbar = ({setSearchProduct}) => {
                 />
             </div> */}
             <div className='flex gap-5 cursor-pointer'>
-               
-                {/* <Link to="/productCatogary">Product Catogary</Link>  */}
-                {/* <li className='list-none'>About</li> */}
-                <Link to="/about">About</Link>
+                <Link className=' hover:text-pink-600' to="/about">About</Link>
+                <Link className=' hover:text-pink-600' to="/about">Cart: ( {cartItems} Items)</Link>
+                <Link className='text-cyan-700 font-semibold hover:text-pink-600'>{user}</Link>
             </div>
         </div>
     )

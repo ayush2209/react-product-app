@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 import ProductCard, { recomendedProductComponent } from './ProductCard';
 import CatogaryWiseProductAccordion from '../CatogaryWiseProduct/CatogaryWiseProductAccordion';
+import UpdateContext from '../UpdateContext';
 
 const ProductList = ({ searchProduct }) => {
 
@@ -66,7 +67,7 @@ const ProductList = ({ searchProduct }) => {
         return Object.keys(groupedData).map((category, index) => ({
             type: category,
             data: groupedData[category],
-            id: 'a' + index + Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000
+            id: index + Math.floor(Math.random() * (9999 - 1000 + 1)) + 100000
         }));
     };
 
@@ -99,26 +100,31 @@ const ProductList = ({ searchProduct }) => {
 
     return (
         <div className='mt-3 m-4'>
-            <div className='flex flex-col md:flex-row justify-end gap-3'>
-                <div className='w-full md:w-[250px]'>
-                    <Autocomplete
-                        options={getProductListDropdown()}
-                        onChange={handleSelectionChange}
-                        renderInput={(params) => <TextField {...params} label="Product" />}
-                    />
+            <div className='flex flex-col my-4 sm:flex-row justify-between'>
+                <div className='mb-3 sm:mb-0'>
+                    <UpdateContext />
                 </div>
-                <div className='w-full md:w-auto hidden sm:block'>
-                    <Box
-                        className='w-full md:w-[250px]'
-                        component="form"
-                        noValidate
-                        autoComplete="off"
-                    >
-                        <TextField id="outlined-basic" label="Search Item" variant="outlined" onKeyDown={searchClicked} fullWidth />
-                    </Box>
+                <div className='flex flex-col sm:flex-row justify-end gap-3'>
+                    <div className='w-full sm:w-[250px]'>
+                        <Autocomplete
+                            options={getProductListDropdown()}
+                            onChange={handleSelectionChange}
+                            renderInput={(params) => <TextField {...params} label="Product" />}
+                        />
+                    </div>
+                    <div className='w-full md:w-auto hidden sm:block'>
+                        <Box
+                            className='w-full sm:w-[250px]'
+                            component="form"
+                            noValidate
+                            autoComplete="off"
+                        >
+                            <TextField id="outlined-basic" label="Search Product" variant="outlined" onKeyDown={searchClicked} fullWidth />
+                        </Box>
+                    </div>
                 </div>
             </div>
-
+            
             <div className='my-3 text-center border-double border-4 border-indigo-600'>
                 <div className='py-4'>Lifting the State : All Product Catogory Using Accordion.</div>
                 <div>
@@ -143,8 +149,6 @@ const ProductList = ({ searchProduct }) => {
                     ))
                 )}
             </div>
-
-
         </div>
     )
 }

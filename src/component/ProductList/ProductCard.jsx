@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { CusotmRating } from '../Rating/CustomRating';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -9,8 +9,12 @@ import CardActions from '@mui/material/CardActions';
 import CardHeader from '@mui/material/CardHeader';
 import { Avatar } from '@mui/material';
 import { red } from '@mui/material/colors';
+import UserLoginContext from '../../utils/UserLogginContext';
 
 const ProductCard = ({ product }) => {
+
+    const { user } = useContext(UserLoginContext);
+
     return (
         <Card className='m-4 w-[300px]' key={product.id} sx={{ boxShadow: 4 }}>
             <CardHeader onClick={(event) => event.preventDefault()}
@@ -25,7 +29,7 @@ const ProductCard = ({ product }) => {
                 <CardMedia
                     className='object-cover h-80 hover:scale-105 transition duration-1000 ease-in-out'
                     component="img"
-                    image={product.image ? product.image : "https://placehold.co/600x400"} alt={product.title}
+                    image={product.image ? product.image : "https://placehold.co/600x400"} alt={product?.title || 'Product Image'}
                 />
                 <CardContent onClick={(event) => event.preventDefault()}>
                     <p className='font-light md:truncate hover:overflow-visible hover:whitespace-normal hover:text-ellipsis'>{product.title}</p>
@@ -39,6 +43,8 @@ const ProductCard = ({ product }) => {
                 </div>
                 <div>
                     <CusotmRating key={product.id} ratingValue={product} />
+                    <hr />
+                    <p className='text-xs text-end text-red-400 m-2'>By: {user}</p>
                 </div>
             </CardActions>
         </Card>
