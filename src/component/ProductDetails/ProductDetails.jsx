@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Routes, Route, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { addItems, removeItems } from '../../store/cartSlice';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
@@ -28,7 +28,6 @@ const ProductDetails = () => {
     };
 
     const handleAddToCart = (product) => {
-        console.log('Product Added to Cart', product);
         dispatch(addItems(product));
     }
 
@@ -77,7 +76,7 @@ const ProductDetails = () => {
                                 <Button className='w-full sm:w-[52%]' variant="contained"
                                 onClick={()=> handleItemRemove(product)}>
                                     <RemoveShoppingCartRoundedIcon />
-                                    <span className='ml-2'>Claer Cart</span>
+                                    <span className='ml-2'>Clear Cart</span>
                                 </Button>
                             )
                         }

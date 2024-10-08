@@ -23,11 +23,11 @@ const ProductList = ({ searchProduct }) => {
 
     useEffect(() => {
         getAllPhotos();
-    }, []);
+    }, [productList]);
 
     useEffect(() => {
         setCategoryList(groupProductsByCategory(tempProductList));
-    }, [productList]);
+    }, [tempProductList]);
 
     useEffect(() => {
         const filteredOption = productList?.filter((product) => {

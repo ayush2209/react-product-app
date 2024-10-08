@@ -1,16 +1,12 @@
-import React, { useReducer } from 'react'
+import React from 'react'
 import Button from '@mui/material/Button';
 import RemoveShoppingCartRoundedIcon from '@mui/icons-material/RemoveShoppingCartRounded';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearItems } from '../../store/cartSlice';
-/**
- *
- *
- * @return {*} 
- */
+
 const AddToCart = () => {
     
-    // To Update any data in the strore we need to use dispatch 
+    // To update any data in the store, we need to use dispatch
     const dispatch = useDispatch(); 
     // Subscribing to read the value from the slice store
     const reducer = useSelector(state => state.cart.items);

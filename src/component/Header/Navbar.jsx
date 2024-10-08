@@ -29,11 +29,11 @@ const Navbar = ({ setSearchProduct }) => {
             <div className='flex gap-5 cursor-pointer'>
                 <Link className='hover:text-pink-600' to="/about">About</Link>
                 {/* {cartItems > 0 && ( */}
-                    <Link className='hover:text-pink-600' to="/cart">
+                    <Link className='hover:text-pink-600 flex align-middle justify-center gap-3' to="/cart">
                         <Badge badgeContent={cartItems} color="success">
                             <AddShoppingCartIcon color="action" />
                         </Badge>
-                        
+                        <span>Cart</span>
                     </Link>
                 {/* )} */}
                 <Link className='text-cyan-700 font-semibold hover:text-pink-600'>{user}</Link>
