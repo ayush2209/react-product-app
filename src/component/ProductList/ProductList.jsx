@@ -125,6 +125,19 @@ const ProductList = ({ searchProduct }) => {
                 </div>
             </div>
 
+            <div className='flex flex-wrap justify-center'>
+                {tempProductList.length === 0 ? (
+                    <h1 className='flex justify-center items-center'>No Product Found</h1>
+                ) : (
+                    tempProductList?.map((product) => (
+                        <Link to={`/productDetails/${product.id}`} key={product.id} style={{ textDecoration: 'none' }} >
+                            {product?.rating?.rate >= 4 ? <RecommendedProductComponent product={product} /> : <ProductCard product={product} />}
+                        </Link>
+                    ))
+                )}
+            </div>
+
+            {/* -- Lifting the state up -- */}
             <div className='my-3 text-center border-double border-4 border-indigo-600'>
                 <div className='py-4'>Lifting the State : All Product Catogory Using Accordion.</div>
                 <div>
@@ -138,17 +151,6 @@ const ProductList = ({ searchProduct }) => {
                 </div>
             </div>
 
-            <div className='flex flex-wrap justify-center'>
-                {tempProductList.length === 0 ? (
-                    <h1 className='flex justify-center items-center'>No Product Found</h1>
-                ) : (
-                    tempProductList?.map((product) => (
-                        <Link to={`/productDetails/${product.id}`} key={product.id} style={{ textDecoration: 'none' }} >
-                            {product?.rating?.rate >= 4 ? <RecommendedProductComponent product={product} /> : <ProductCard product={product} />}
-                        </Link>
-                    ))
-                )}
-            </div>
         </div>
     )
 }

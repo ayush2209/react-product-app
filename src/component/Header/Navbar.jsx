@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import UserLoginContext from '../../utils/UserLogginContext';
 import { useSelector } from 'react-redux';
+import { Badge } from '@mui/material';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 const Navbar = ({ setSearchProduct }) => {
 
@@ -25,8 +27,15 @@ const Navbar = ({ setSearchProduct }) => {
                 />
             </div> */}
             <div className='flex gap-5 cursor-pointer'>
-                <Link className=' hover:text-pink-600' to="/about">About</Link>
-                {cartItems > 0 && <Link className=' hover:text-pink-600' to="/about">Cart: ( {cartItems} Items)</Link> }
+                <Link className='hover:text-pink-600' to="/about">About</Link>
+                {/* {cartItems > 0 && ( */}
+                    <Link className='hover:text-pink-600' to="/cart">
+                        <Badge badgeContent={cartItems} color="success">
+                            <AddShoppingCartIcon color="action" />
+                        </Badge>
+                        
+                    </Link>
+                {/* )} */}
                 <Link className='text-cyan-700 font-semibold hover:text-pink-600'>{user}</Link>
             </div>
         </div>

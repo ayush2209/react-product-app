@@ -2,6 +2,7 @@ import { lazy, useState, Suspense, useEffect, useContext } from 'react';
 import './App.css';
 import ProductList from './component/ProductList/ProductList';
 import ProductDetails from './component/ProductDetails/ProductDetails';
+import AddToCart from './component/Cart/AddToCart';
 import { createBrowserRouter, RouterProvider, Outlet, Route } from 'react-router-dom';
 import Navbar from './component/Header/Navbar';
 import ProtectedRoute from './component/Auth/ProtectedRoute';
@@ -23,14 +24,14 @@ const Home = () => {
 
   useEffect(() => {
     const data = {
-      user: 'Ayush Anand'
+      user: 'Ayush'
     }
     setUserName(data.user);
   }, []);
 
   return (
-    <Provider store={appStore}> 
-      <UserLoginContext.Provider value={{ user: userName, setUserName }}> 
+    <Provider store={appStore}>
+      <UserLoginContext.Provider value={{ user: userName, setUserName }}>
         <ProtectedRoute component={Navbar} setSearchProduct={setSearchProduct} />
         <Outlet />
       </UserLoginContext.Provider>
@@ -58,6 +59,14 @@ const appRoutes = createBrowserRouter([
         element: (
           <Suspense>
             <ProtectedRoute component={About} />
+          </Suspense>
+        )
+      },
+      {
+        path: '/cart',
+        element: (
+          <Suspense>
+            <ProtectedRoute component={AddToCart} />
           </Suspense>
         )
       }
