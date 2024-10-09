@@ -1,4 +1,3 @@
-import React from 'react';
 
 const About = () => {
     return (
@@ -10,6 +9,7 @@ const About = () => {
                 <h2 className="text-2xl font-bold mb-2">Your Name</h2>
                 <p className="text-base">Details about you go here. You can include your bio, interests, and any other relevant information.</p>
             </div>
+            <button>HI Hello</button>
         </section>
     );
 };
