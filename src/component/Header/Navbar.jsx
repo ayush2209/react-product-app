@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import UserLoginContext from '../../utils/UserLogginContext';
 import { useSelector } from 'react-redux';
 import { Badge } from '@mui/material';
@@ -10,6 +10,16 @@ const Navbar = ({ setSearchProduct }) => {
 
     const { user } = useContext(UserLoginContext);
     const cartItems = useSelector(state => state.cart.items.length);
+
+    const [loginState, setLoginState] = useState('Login');
+
+    const handleLoginState = () => {
+        if (loginState === 'Login') {
+            setLoginState('Logout');
+        } else {
+            setLoginState('Login');
+        }
+    }
 
     return (
         <div className="flex flex-col md:flex-row gap-3 justify-between items-center p-4 sticky top-0 left-0 shadow-lg z-[2] backdrop-filter backdrop-blur-lg">
@@ -36,7 +46,10 @@ const Navbar = ({ setSearchProduct }) => {
                         <span>Cart</span>
                     </Link>
                 {/* )} */}
-                <Link className='text-cyan-700 font-semibold hover:text-pink-600'>{user}</Link>
+
+                {loginState == 'Logout' && <Link className='text-cyan-700 font-semibold hover:text-pink-600'>{user}</Link>}
+                
+                <Link className='hover:text-pink-600' onClick={handleLoginState}>{loginState}</Link>
             </div>
         </div>
     )

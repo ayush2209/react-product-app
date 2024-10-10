@@ -23,13 +23,13 @@ const ProductCard = ({ product }) => {
                         {product?.title?.charAt(0).toUpperCase()}
                     </Avatar>
                 }
-                title={product.category.toUpperCase()}
+                title={product?.category?.toUpperCase()}
             />
             <CardActionArea >
                 <CardMedia
                     className='object-cover h-80 hover:scale-105 transition duration-1000 ease-in-out'
                     component="img"
-                    image={product.image ? product.image : "https://placehold.co/600x400"} alt={product?.title || 'Product Image'}
+                    image={product?.image ? product.image : "https://placehold.co/600x400"} alt={product?.title || 'Product Image'}
                 />
                 <CardContent onClick={(event) => event.preventDefault()}>
                     <p className='font-light md:truncate hover:overflow-visible hover:whitespace-normal hover:text-ellipsis'>{product.title}</p>
